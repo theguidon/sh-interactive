@@ -33,10 +33,14 @@ export default ({ modifyBottomBar, text, tag, date }) => {
 
   React.useEffect(() => {
     const item = description_wrapper && description_wrapper.current
-    const options = { threshold: [0.8, 1], root: null, rootMargin: "10px" }
+    const options = {
+      threshold: [0.5, 0.6, 0.7, 0.8, 1],
+      root: null,
+      rootMargin: "10px",
+    }
     const callback = function(entries, observer) {
       entries.forEach(entry => {
-        if (entry.intersectionRatio > 0.9) {
+        if (entry.intersectionRatio > 0.7) {
           // setShowBar(true)
           setLock(true)
           modifyBottomBar(true, tag, date)

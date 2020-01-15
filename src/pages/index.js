@@ -1,7 +1,12 @@
 import React from "react"
 import styled, { css } from "styled-components"
 import tw from "tailwind.macro"
-import { useViewportScroll, motion } from "framer-motion"
+import {
+  useViewportScroll,
+  motion,
+  useTransform,
+  useSpring,
+} from "framer-motion"
 
 import DescriptionBox from "../components/DescriptionBox"
 import Hero from "../components/Hero"
@@ -68,6 +73,13 @@ export default () => {
   const [date, setDate] = React.useState("")
   const [progress, setProgress] = React.useState(0)
   const { scrollYProgress } = useViewportScroll()
+  const yRange = useTransform(scrollYProgress, v => {
+    const val = v
+    if (val < 0) {
+      return 0
+    }
+    return v
+  })
 
   const modifyBottomBar = function(showBar, tag, date) {
     setShowBar(showBar)
@@ -102,7 +114,7 @@ export default () => {
     <Layout>
       <Hero />
       <DescriptionSection showBar={showBar} ref={description_wrapper}>
-        <LoadingBox style={{ scaleY: scrollYProgress.current }} />
+        <LoadingBox style={{ scaleY: yRange }} />
         {descriptions.map((el, i, a) => {
           return (
             <DescriptionBox
