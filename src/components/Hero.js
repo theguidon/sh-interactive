@@ -1,5 +1,5 @@
 import React from "react"
-import GLogo from "../images/gdn-logo.png"
+import GLogo from "../images/gdn.svg"
 
 import styled from "styled-components"
 import tw from "tailwind.macro"

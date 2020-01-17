@@ -27,26 +27,27 @@ const DescriptionTextContainer = styled.div`
   ${tw`relative z-20`}
 `
 
-export default ({ modifyBottomBar, text, tag, date }) => {
+export default ({ modifyBottomBar, text, tag, date, weight, currWeight }) => {
   const [lock, setLock] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
   React.useEffect(() => {
     const item = description_wrapper && description_wrapper.current
     const options = {
-      threshold: [0.5, 0.6, 0.7, 0.8, 1],
+      threshold: 0.7,
       root: null,
       rootMargin: "10px",
     }
     const callback = function(entries, observer) {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
-          // setShowBar(true)
           setLock(true)
-          modifyBottomBar(true, tag, date)
-          console.log("heyy")
+          modifyBottomBar(tag, date, weight)
+          // console.log(weight)
+          // console.log(currWeight)
+          // create element based on weight
         } else {
-          modifyBottomBar(false, "", "")
+          modifyBottomBar("", "", "")
         }
       })
     }
