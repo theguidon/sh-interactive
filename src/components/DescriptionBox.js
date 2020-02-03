@@ -1,6 +1,5 @@
 import React from "react"
 import styled, { css } from "styled-components"
-import tw from "tailwind.macro"
 
 const DescriptionLoading = styled.div`
   /* transform: translateY(-100%); */
@@ -8,10 +7,10 @@ const DescriptionLoading = styled.div`
 `
 
 const DescriptionContainer = styled.div`
-  ${tw`relative`}
+  /* ${tw`relative`} */
 `
 const DescriptionScreen = styled.div`
-  ${tw`bg-primary h-screen flex flex-col items-center justify-center relative`}
+  /* ${tw`bg-primary h-screen flex flex-col items-center justify-center relative`} */
 /* 
   ${props =>
     props.lock &&
@@ -20,14 +19,21 @@ const DescriptionScreen = styled.div`
     `} */
 `
 const DescriptionText = styled.p`
-  ${tw`max-w-lg text-center text-text-color leading-loose`}
+  /* ${tw`max-w-lg text-center text-text-color leading-loose`} */
   text-shadow: 4px 4px 25px rgba(0, 0, 0, 0.25);
 `
 const DescriptionTextContainer = styled.div`
-  ${tw`relative z-20`}
+  /* ${tw`relative z-20`} */
 `
 
-export default ({ modifyBottomBar, text, tag, date, weight, currWeight }) => {
+export default ({
+  modifyBottomBar,
+  text,
+  tag,
+  date,
+  weight,
+  currTagWeight,
+}) => {
   const [lock, setLock] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
@@ -42,12 +48,10 @@ export default ({ modifyBottomBar, text, tag, date, weight, currWeight }) => {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
           setLock(true)
-          modifyBottomBar(tag, date, weight)
-          // console.log(weight)
-          // console.log(currWeight)
-          // create element based on weight
+          console.log(currTagWeight)
+          modifyBottomBar(weight, weight)
         } else {
-          modifyBottomBar("", "", "")
+          modifyBottomBar("", "")
         }
       })
     }

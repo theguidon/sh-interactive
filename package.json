@@ -15,24 +15,21 @@
   },
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.6",
-    "framer-motion": "^1.7.0",
     "gatsby": "^2.18.12",
-    "gatsby-plugin-postcss": "^2.1.19",
+    "gatsby-plugin-page-progress": "^2.0.14",
     "gatsby-plugin-react-helmet": "^3.1.21",
     "gatsby-plugin-styled-components": "^3.1.17",
+    "gatsby-source-prismic-graphql": "^3.3.1",
     "intersection-observer": "^0.7.0",
     "lodash.throttle": "^4.1.1",
+    "prismic-reactjs": "^1.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
-    "react-transition-group": "^4.3.0",
-    "react-waypoint": "^9.0.2",
-    "styled-components": "^5.0.0",
-    "tailwind.macro": "^1.0.0-alpha.10"
+    "styled-components": "^5.0.0"
   },
   "devDependencies": {
-    "prettier": "^1.19.1",
-    "tailwindcss": "^1.1.4"
+    "prettier": "^1.19.1"
   },
   "repository": {
     "type": "git",
