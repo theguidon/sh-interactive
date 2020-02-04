@@ -1,39 +1,41 @@
 import React from "react"
 import styled, { css } from "styled-components"
+import { RichText } from "prismic-reactjs"
 
 const DescriptionLoading = styled.div`
   /* transform: translateY(-100%); */
   transition: transform 0.4s;
 `
 
-const DescriptionContainer = styled.div`
-  /* ${tw`relative`} */
-`
+const DescriptionContainer = styled.div``
+
 const DescriptionScreen = styled.div`
-  /* ${tw`bg-primary h-screen flex flex-col items-center justify-center relative`} */
 /* 
   ${props =>
     props.lock &&
     css`
       overflow: hidden;
     `} */
-`
-const DescriptionText = styled.p`
-  /* ${tw`max-w-lg text-center text-text-color leading-loose`} */
-  text-shadow: 4px 4px 25px rgba(0, 0, 0, 0.25);
-`
-const DescriptionTextContainer = styled.div`
-  /* ${tw`relative z-20`} */
+    background-color: #0B0614;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
 `
 
-export default ({
-  modifyBottomBar,
-  text,
-  tag,
-  date,
-  weight,
-  currTagWeight,
-}) => {
+/* ${tw`max-w-lg text-center text-text-color leading-loose`} */
+
+const DescriptionText = styled.p``
+/* ${tw`relative z-20`} */
+
+const DescriptionTextContainer = styled.div`
+  text-shadow: 4px 4px 25px rgba(0, 0, 0, 0.25);
+  color: #f6f8ff;
+`
+
+export default ({ modifyBottomBar, html }) => {
+  console.log(html)
   const [lock, setLock] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
@@ -48,8 +50,7 @@ export default ({
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
           setLock(true)
-          console.log(currTagWeight)
-          modifyBottomBar(weight, weight)
+          modifyBottomBar(1, 1)
         } else {
           modifyBottomBar("", "")
         }
@@ -66,13 +67,9 @@ export default ({
   return (
     <DescriptionContainer ref={description_wrapper}>
       <DescriptionScreen lock={lock}>
-        <DescriptionTextContainer>
-          {typeof text == "object" ? (
-            text.map((el, i) => <DescriptionText key={i}>{el}</DescriptionText>)
-          ) : (
-            <DescriptionText>{text}</DescriptionText>
-          )}
-        </DescriptionTextContainer>
+        <DescriptionTextContainer
+          dangerouslySetInnerHTML={{ __html: html }}
+        ></DescriptionTextContainer>
       </DescriptionScreen>
     </DescriptionContainer>
   )

@@ -1,25 +1,16 @@
 import React from "react"
+import { graphql } from "gatsby"
 import styled, { css } from "styled-components"
 
 import DescriptionBox from "../components/DescriptionBox"
 import Hero from "../components/Hero"
 import Layout from "../components/Layout"
 
-import descriptions from "../data/descriptions.js"
-
 const DescriptionSection = styled.section`
   position: relative;
 `
 
-const LoadingBox = styled(motion.div)`
-  position: absolute;
-  /* ${tw`bg-loader-green z-10`}; */
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  transform-origin: left top;
-`
+/* ${tw`shadow-lg`} */
 
 const BottomBar = styled.div`
   height: 96px;
@@ -51,7 +42,6 @@ const BottomBar = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  /* ${tw`shadow-lg`} */
 `
 
 const DateContainer = styled.div`
@@ -90,7 +80,10 @@ function getDocHeight() {
   )
 }
 
-export default () => {
+export default ({ data }) => {
+  const { events, tags } = data
+  console.log(events)
+  console.log(tags)
   const description_wrapper = React.useRef(null)
   const [showBar, setShowBar] = React.useState(false)
   const [currDateWeight, setCurrDateWeight] = React.useState(0)
@@ -103,11 +96,12 @@ export default () => {
       }
 
       if (newTagWeight !== "") {
-        console.log(descriptions[newTagWeight].category)
-        console.log(descriptions[capturedCurrTagWeight].category)
+        // console.log(descriptions[newTagWeight].category)
+        // console.log(descriptions[capturedCurrTagWeight].category)
         if (
-          descriptions[newTagWeight].tag !==
-          descriptions[capturedCurrTagWeight].tag
+          // descriptions[newTagWeight].tag !==
+          // descriptions[capturedCurrTagWeight].tag
+          true
         ) {
           setCurrTagWeight(newTagWeight)
         }
@@ -155,19 +149,72 @@ export default () => {
             />
           )
         })} */}
+        {events.edges.map((el, i) => {
+          return (
+            <DescriptionBox
+              key={el.node.id}
+              html={el.node.data.description.html}
+              modifyBottomBar={modifyBottomBar(1)}
+            ></DescriptionBox>
+          )
+        })}
         <BottomBar showBar={showBar}>
           <TagContainer>
-            {/* {descriptions.map((el, i) => {
-              return (
-                <Tag key={i} currTagWeight={currTagWeight}>
-                  {el.tag}
-                </Tag>
-              )
-            })} */}
+            {tags.edges.map(el => {
+              return <Tag key={el.node.id}>{el.node.data.name.text}</Tag>
+            })}
           </TagContainer>
-          {/* <DateContainer></DateContainer> */}
+          <DateContainer>
+            {events.edges.map(el => {
+              return <Date key={el.node.id}>{el.node.data.date.text}</Date>
+            })}
+          </DateContainer>
         </BottomBar>
       </DescriptionSection>
     </Layout>
   )
 }
+
+export const query = graphql`
+  query EventQuery {
+    events: allPrismicEvent {
+      edges {
+        node {
+          data {
+            date {
+              text
+            }
+            description {
+              html
+            }
+            tag {
+              document {
+                ... on PrismicTags {
+                  id
+                  data {
+                    name {
+                      text
+                    }
+                  }
+                }
+              }
+            }
+          }
+          id
+        }
+      }
+    }
+    tags: allPrismicTags {
+      edges {
+        node {
+          data {
+            name {
+              text
+            }
+          }
+          id
+        }
+      }
+    }
+  }
+`

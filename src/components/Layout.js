@@ -1,5 +1,5 @@
 import React from "react"
-import "../styles/index.css"
+import "../styles/reset.css"
 import { Helmet } from "react-helmet"
 
 export default props => (

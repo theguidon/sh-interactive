@@ -3,9 +3,12 @@ import GLogo from "../images/gdn.svg"
 
 import styled from "styled-components"
 
+/* ${tw`h-screen bg-black`} */
+
 const Hero = styled.section`
-  /* ${tw`h-screen bg-black`} */
-  color: #F6F7F9;
+  color: #f6f7f9;
+  background-color: #000;
+  height: 100vh;
 `
 
 export default () => (

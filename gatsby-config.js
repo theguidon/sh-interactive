@@ -16,5 +16,21 @@ module.exports = {
         color: "#008C99",
       },
     },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: "gatsby-source-prismic",
+      options: {
+        repositoryName: "shinteractive",
+        accessToken:
+          "MC5YamhmQUJBQUFDTUFrTVhQ.77-9Y--_vXvvv73vv70877-977-9Hu-_ve-_vQliGBLvv73vv71V77-977-977-977-977-9aO-_ve-_ve-_vUwFIe-_vQ",
+        schemas: {
+          event: require("./src/schema/eventSchema.json"),
+        },
+        shouldNormalizeImage: ({ node, key, value }) => {
+          return true
+        },
+      },
+    },
   ],
 }
