@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Tiempos Text";
+  src: url("tt-regular.otf");
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tiempos Text";
+  src: url("tt-bold.otf");
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tiempos Text";
+  src: url("tt-medium.otf");
+  font-style: normal;
+  font-weight: medium;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tiempos Text";
+  src: url("tt-semibold.otf");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}

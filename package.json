@@ -16,10 +16,12 @@
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.6",
     "gatsby": "^2.18.12",
+    "gatsby-background-image": "^0.9.14",
     "gatsby-plugin-page-progress": "^2.0.14",
     "gatsby-plugin-react-helmet": "^3.1.21",
     "gatsby-plugin-sharp": "^2.4.5",
     "gatsby-plugin-styled-components": "^3.1.17",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-source-filesystem": "^2.1.48",
     "gatsby-source-prismic": "^2.3.0-alpha.3",
     "gatsby-transformer-sharp": "^2.3.14",

@@ -2,40 +2,60 @@ import React from "react"
 import styled, { css } from "styled-components"
 import { RichText } from "prismic-reactjs"
 
-const DescriptionLoading = styled.div`
-  /* transform: translateY(-100%); */
-  transition: transform 0.4s;
-`
-
 const DescriptionContainer = styled.div``
 
 const DescriptionScreen = styled.div`
-/* 
-  ${props =>
-    props.lock &&
-    css`
-      overflow: hidden;
-    `} */
-    background-color: #0B0614;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items:center;
+  background-color: #0b0614;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
-
-/* ${tw`max-w-lg text-center text-text-color leading-loose`} */
-
-const DescriptionText = styled.p``
-/* ${tw`relative z-20`} */
 
 const DescriptionTextContainer = styled.div`
-  text-shadow: 4px 4px 25px rgba(0, 0, 0, 0.25);
-  color: #f6f8ff;
+  text-shadow: ${p => p.theme["text-shadow"]};
+  p {
+    color: ${props => props.theme["text-color"]};
+    font-size: 24px;
+    max-width: 800px;
+    text-align: center;
+    line-height: 200%;
+  
+  }
+
+  p:not(:last-child) {
+    margin-bottom: 64px;
+  }
+
+  a {
+    color: ${p => p.theme["text-color"]};
+    text-decoration: none;
+    position: relative;
+    /* display: inline-block; */
+    z-index: 50;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      left: 0;
+      right: 0;
+      background-color: ${p => p.theme["loader-green"]};
+      z-index: 1;
+    }
+
+    transition: all ease-in 0.2s;
+
+    /* &:hover {
+      background-color: ${p => p.theme["text-color"]};
+      color: ${p => p.theme["loader-green"]};
+    } */
+  }
 `
 
-export default ({ modifyBottomBar, html }) => {
-  console.log(html)
+export default ({ modifyBottomBar, html, dateIndex, tag }) => {
   const [lock, setLock] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
@@ -50,7 +70,7 @@ export default ({ modifyBottomBar, html }) => {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
           setLock(true)
-          modifyBottomBar(1, 1)
+          modifyBottomBar(dateIndex, tag)
         } else {
           modifyBottomBar("", "")
         }

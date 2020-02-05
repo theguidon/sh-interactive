@@ -8,6 +8,18 @@ module.exports = {
   /* Your site config here */
   plugins: [
     `gatsby-plugin-react-helmet`,
+    {
+      resolve: "gatsby-plugin-web-font-loader",
+      options: {
+        google: {
+          families: ["Mukta"],
+        },
+        custom: {
+          families: ["Tiempos Text"],
+          urls: ["/fonts/fonts.css"],
+        },
+      },
+    },
     `gatsby-plugin-styled-components`,
     {
       resolve: "gatsby-plugin-page-progress",

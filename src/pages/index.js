@@ -10,8 +10,6 @@ const DescriptionSection = styled.section`
   position: relative;
 `
 
-/* ${tw`shadow-lg`} */
-
 const BottomBar = styled.div`
   height: 96px;
   padding-left: 64px;
@@ -19,7 +17,6 @@ const BottomBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* overflow: hidden; */
   background-color: white;
 
   font-weight: bold;
@@ -28,11 +25,10 @@ const BottomBar = styled.div`
 
   p {
     letter-spacing: 0.05em;
-    /* transform: translateY(-200%); */
+    font-weight: 600;
   }
 
   h2 {
-    /* transform: translateY(-200%); */
   }
   transition: transform 0.4s;
   transform: ${p => (!p.showBar ? "translateY(100%)" : "translateY(0%)")};
@@ -45,67 +41,62 @@ const BottomBar = styled.div`
 `
 
 const DateContainer = styled.div`
-  /* transform: translateY(${100}px); */
-  height: 36px;
-  overflow: hidden;
+  height: 31.2px;
+  overflow-y: hidden;
 `
 const Date = styled.p`
   transition: transform 0.2s ease-in-out;
-
-  transform: translateY(${p => p.currDateWeight * -36}px);
+  font-family: "Tiempos Text", serif;
+  transform: translateY(${p => p.currDateIndex * -31.2}px);
   text-align: right;
 `
 
 const TagContainer = styled.div`
-  height: 36px;
+  height: 31.2px;
   overflow: hidden;
 `
 const Tag = styled.h2`
   transition-property: transform;
   transition-timing-function: ease-in-out;
   transition-duration: 0.2s;
-  transform: translateY(${p => p.currTagWeight * -36}px);
+  transform: translateY(${p => p.currTagIndex * -31.2}px);
   text-align: left;
+  font-family: "Tiempos Text", serif;
+  font-weight: 600;
 `
 
-function getDocHeight() {
-  var D = typeof document !== "undefined" && document
-  return Math.max(
-    D.body.scrollHeight,
-    D.documentElement.scrollHeight,
-    D.body.offsetHeight,
-    D.documentElement.offsetHeight,
-    D.body.clientHeight,
-    D.documentElement.clientHeight
-  )
-}
-
 export default ({ data }) => {
-  const { events, tags } = data
-  console.log(events)
-  console.log(tags)
+  let { events, tags } = data
+  events = events.edges.sort(function(a, b) {
+    const key1 =
+      typeof window !== "undefined" && new window.Date(a.node.data.date.text)
+    const key2 =
+      typeof window !== "undefined" && new window.Date(b.node.data.date.text)
+
+    if (key1 < key2) {
+      return -1
+    } else if (key1 == key2) {
+      return 0
+    } else {
+      return 1
+    }
+  })
   const description_wrapper = React.useRef(null)
   const [showBar, setShowBar] = React.useState(false)
-  const [currDateWeight, setCurrDateWeight] = React.useState(0)
-  const [currTagWeight, setCurrTagWeight] = React.useState(0)
+  const [currDateIndex, setCurrDateIndex] = React.useState(0)
+  const [currTagIndex, setCurrTagIndex] = React.useState(0)
 
-  const modifyBottomBar = function(capturedCurrTagWeight) {
-    return function(newDateWeight, newTagWeight) {
-      if (newDateWeight !== "") {
-        setCurrDateWeight(newDateWeight)
-      }
+  const modifyBottomBar = function(newDateIndex, newTagIndex) {
+    if (newDateIndex !== "") {
+      setCurrDateIndex(newDateIndex)
+    }
 
-      if (newTagWeight !== "") {
-        // console.log(descriptions[newTagWeight].category)
-        // console.log(descriptions[capturedCurrTagWeight].category)
-        if (
-          // descriptions[newTagWeight].tag !==
-          // descriptions[capturedCurrTagWeight].tag
-          true
-        ) {
-          setCurrTagWeight(newTagWeight)
-        }
-      }
+    if (newTagIndex !== "") {
+      const tagNum = tags.edges.findIndex(el => {
+        return el.node.data.name.text === newTagIndex
+      })
+
+      setCurrTagIndex(tagNum)
     }
   }
 
@@ -132,41 +123,39 @@ export default ({ data }) => {
 
     return () => observer.unobserve(item)
   }, [])
+
   return (
     <Layout>
       <Hero />
       <DescriptionSection ref={description_wrapper}>
-        {/* {descriptions.map((el, i, a) => {
-          return (
-            <DescriptionBox
-              text={el.text}
-              tag={el.tag}
-              date={el.date}
-              category={el.category}
-              weight={i}
-              key={i}
-              modifyBottomBar={modifyBottomBar(currTagWeight)}
-            />
-          )
-        })} */}
-        {events.edges.map((el, i) => {
+        {events.map((el, i) => {
           return (
             <DescriptionBox
               key={el.node.id}
               html={el.node.data.description.html}
-              modifyBottomBar={modifyBottomBar(1)}
+              tag={el.node.data.tag.document[0].data.name.text}
+              dateIndex={i}
+              modifyBottomBar={modifyBottomBar}
             ></DescriptionBox>
           )
         })}
         <BottomBar showBar={showBar}>
           <TagContainer>
             {tags.edges.map(el => {
-              return <Tag key={el.node.id}>{el.node.data.name.text}</Tag>
+              return (
+                <Tag key={el.node.id} currTagIndex={currTagIndex}>
+                  {el.node.data.name.text}
+                </Tag>
+              )
             })}
           </TagContainer>
           <DateContainer>
-            {events.edges.map(el => {
-              return <Date key={el.node.id}>{el.node.data.date.text}</Date>
+            {events.map(el => {
+              return (
+                <Date key={el.node.id} currDateIndex={currDateIndex}>
+                  {el.node.data.date.text}
+                </Date>
+              )
             })}
           </DateContainer>
         </BottomBar>
