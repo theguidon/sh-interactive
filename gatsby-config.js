@@ -12,7 +12,7 @@ module.exports = {
       resolve: "gatsby-plugin-web-font-loader",
       options: {
         google: {
-          families: ["Mukta"],
+          families: ["Mukta:400,700"],
         },
         custom: {
           families: ["Tiempos Text"],

@@ -1,6 +1,5 @@
 import React from "react"
 import styled, { css } from "styled-components"
-import { RichText } from "prismic-reactjs"
 
 const DescriptionContainer = styled.div``
 
@@ -21,42 +20,75 @@ const DescriptionTextContainer = styled.div`
     max-width: 800px;
     text-align: center;
     line-height: 200%;
-  
+
+    @media screen and (max-width: 950px) {
+      font-size: 20px;
+      max-width: 600px;
+    }
+
+    @media screen and (max-width: 730px) {
+      font-size: 20px;
+      max-width: 550px;
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: 16px;
+      max-width: 500px;
+    }
+    @media screen and (max-width: 660px) {
+      max-width: 450px;
+    }
+
+    @media screen and (max-width: 540px) {
+      max-width: 420px; /* blazeit */
+    }
+
+    @media screen and (max-width: 475px) {
+      max-width: 350px;
+    }
+
+    @media screen and (max-width: 390px) {
+      max-width: 300px; /* blazeit */
+    }
+
+    @media screen and (max-width: 340px) {
+      max-width: 250px; /* blazeit */
+    }
   }
 
   p:not(:last-child) {
     margin-bottom: 64px;
+
+    @media screen and (max-width: 640px) {
+      margin-bottom: 32px;
+    }
   }
 
   a {
     color: ${p => p.theme["text-color"]};
     text-decoration: none;
-    position: relative;
-    /* display: inline-block; */
-    z-index: 50;
+    background: linear-gradient(
+      to left,
+      #0b0614 50%,
+      ${p => p.theme["loader-green"]} 50%
+    );
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all 0.3s ease-in;
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: 5px;
-      bottom: 5px;
-      left: 0;
-      right: 0;
-      background-color: ${p => p.theme["loader-green"]};
-      z-index: 1;
-    }
+    ${p =>
+      p.showAnimation &&
+      css`
+      /* color: ${p.theme["loader-green"]}; */
+      background-position:left bottom;
 
-    transition: all ease-in 0.2s;
-
-    /* &:hover {
-      background-color: ${p => p.theme["text-color"]};
-      color: ${p => p.theme["loader-green"]};
-    } */
+    `};
   }
 `
 
 export default ({ modifyBottomBar, html, dateIndex, tag }) => {
   const [lock, setLock] = React.useState(false)
+  const [showAnimation, setShowAnimation] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
   React.useEffect(() => {
@@ -64,13 +96,14 @@ export default ({ modifyBottomBar, html, dateIndex, tag }) => {
     const options = {
       threshold: 0.7,
       root: null,
-      rootMargin: "10px",
+      rootMargin: "-10px",
     }
     const callback = function(entries, observer) {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
           setLock(true)
           modifyBottomBar(dateIndex, tag)
+          setShowAnimation(true)
         } else {
           modifyBottomBar("", "")
         }
@@ -89,6 +122,7 @@ export default ({ modifyBottomBar, html, dateIndex, tag }) => {
       <DescriptionScreen lock={lock}>
         <DescriptionTextContainer
           dangerouslySetInnerHTML={{ __html: html }}
+          showAnimation={showAnimation}
         ></DescriptionTextContainer>
       </DescriptionScreen>
     </DescriptionContainer>
