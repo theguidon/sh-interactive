@@ -6,6 +6,7 @@ import DescriptionBox from "../components/DescriptionBox"
 import Hero from "../components/Hero"
 import Layout from "../components/Layout"
 
+
 const DescriptionSection = styled.section`
   position: relative;
 `
@@ -101,7 +102,7 @@ const TagContainer = styled.div`
     height: 36.8px;
     position: relative;
     ${p =>
-      (p.currTagIndex == 0 || p.currTagIndex == 3) &&
+      (p.currTagIndex === 0 || p.currTagIndex === 3) &&
       css`
         top: 50%;
         transform: translateY(-50%);
