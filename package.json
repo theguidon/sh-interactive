@@ -14,6 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "animate.css": "^4.1.0",
     "babel-plugin-styled-components": "^1.10.6",
     "gatsby": "^2.18.12",
     "gatsby-background-image": "^0.9.14",
@@ -38,6 +39,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/theguidon/sh-interactive"
-  }
+    "url": "git+https://github.com/theguidon/sh-interactive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theguidon/sh-interactive/issues"
+  },
+  "homepage": "https://github.com/theguidon/sh-interactive#readme",
+  "main": "gatsby-browser.js",
+  "author": ""
 }
