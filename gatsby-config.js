@@ -20,6 +20,13 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/images/`,
+      },
+    },
     `gatsby-plugin-styled-components`,
     {
       resolve: "gatsby-plugin-page-progress",
@@ -38,8 +45,10 @@ module.exports = {
           "MC5YamhmQUJBQUFDTUFrTVhQ.77-9Y--_vXvvv73vv70877-977-9Hu-_ve-_vQliGBLvv73vv71V77-977-977-977-977-9aO-_ve-_ve-_vUwFIe-_vQ",
         schemas: {
           event: require("./src/schema/eventSchema.json"),
+          tags: require("./src/schema/tagSchema.json"),
         },
-        shouldNormalizeImage: ({ node, key, value }) => {
+        shouldDownloadImage: ({ node, key, value }) => {
+          // Return true to download the image or false to skip.
           return true
         },
       },

@@ -29,6 +29,20 @@
         "thumbnails": [],
         "label": "background_image"
       }
+    },
+    "mobile_background_image": {
+      "type": "Image",
+      "config": {
+        "constraint": {},
+        "thumbnails": [],
+        "label": "mobile_background_image"
+      }
+    },
+    "order": {
+      "type": "Number",
+      "config": {
+        "label": "order"
+      }
     }
   }
 }

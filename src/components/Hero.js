@@ -1,54 +1,14 @@
 import React from "react"
+import { useStaticQuery, graphql } from "gatsby"
 import GLogo from "../images/90thLogo_Long_White.svg"
-import BGImg from "../images/HeroBGimg.png"
 import MouseImg from "../images/mouse.svg"
 import ChevDown from "../images/chevron-down.svg"
 
+import BackgroundImage from "gatsby-background-image"
 import styled from "styled-components"
 
 /* ${tw`h-screen bg-black`} */
 
-const Hero = styled.section`
-  display: grid;
-  grid-template-rows: 20% auto 20%;
-  grid-template-columns: auto;
-  grid-template-areas:
-    "empty"
-    "logo"
-    "mouse";
-  padding: 64px 128px;
-  box-sizing: border-box;
-  color: #f6f7f9;
-  background: linear-gradient(
-      0deg,
-      rgba(11, 6, 20, 0.8) 0%,
-      rgba(11, 6, 20, 0.8) 100%
-    ),
-    url(${BGImg});
-  background-size: cover;
-  mix-blend-mode: multiply;
-  height: 100vh;
-
-  @media screen and (max-width: 1110px) {
-    padding: 64px 96px;
-  }
-
-  @media screen and (max-width: 850px) {
-    padding: 64px 64px;
-  }
-
-  @media screen and (max-width: 775px) {
-    padding: 48px;
-  }
-
-  @media screen and (max-width: 575px) {
-    padding: 36px;
-  }
-
-  @media screen and (max-width: 420px) {
-    padding: 24px;
-  }
-`
 const Header = styled.h1`
   font-family: "Tiempos Text";
   font-size: 72px;
@@ -162,15 +122,76 @@ const ScrollDownWrapper = styled.div`
   }
 `
 
-export default () => (
-  <Hero>
-    <HeadlineWrapper>
-      <Logo src={GLogo} />
-      <Header>Sexual harassment in Ateneo: A timeline</Header>
-    </HeadlineWrapper>
-    <ScrollDownWrapper>
-      <img alt="Mouse Icon" id="mouseImg" src={MouseImg} />
-      <img alt="Arrow Down Icon" id="chevronDown" src={ChevDown} />
-    </ScrollDownWrapper>
-  </Hero>
-)
+function HeroSection({ className }) {
+  const { bg } = useStaticQuery(graphql`
+    query {
+      bg: file(relativePath: { eq: "HeroBGimg.png" }) {
+        childImageSharp {
+          fluid(quality: 90, maxWidth: 1920) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+    }
+  `)
+
+  const backgroundFluidImageStack = [
+    bg.childImageSharp.fluid,
+    `linear-gradient(0deg,rgba(11, 6, 20, 0.8) 0%,rgba(11, 6, 20, 0.8) 100%)`,
+  ].reverse()
+  return (
+    <BackgroundImage
+      Tag="section"
+      className={className}
+      fluid={backgroundFluidImageStack}
+    >
+      <HeadlineWrapper>
+        <Logo src={GLogo} />
+        <Header>Sexual harassment in Ateneo: A timeline</Header>
+      </HeadlineWrapper>
+      <ScrollDownWrapper>
+        <img alt="Mouse Icon" id="mouseImg" src={MouseImg} />
+        <img alt="Arrow Down Icon" id="chevronDown" src={ChevDown} />
+      </ScrollDownWrapper>
+    </BackgroundImage>
+  )
+}
+
+const Hero = styled(HeroSection)`
+  display: grid;
+  grid-template-rows: 20% auto 20%;
+  grid-template-columns: auto;
+  grid-template-areas:
+    "empty"
+    "logo"
+    "mouse";
+  padding: 64px 128px;
+  box-sizing: border-box;
+  color: #f6f7f9;
+  background-size: cover;
+  background-color: transparent;
+  height: 100vh;
+  width: 100%;
+
+  @media screen and (max-width: 1110px) {
+    padding: 64px 96px;
+  }
+
+  @media screen and (max-width: 850px) {
+    padding: 64px 64px;
+  }
+
+  @media screen and (max-width: 775px) {
+    padding: 48px;
+  }
+
+  @media screen and (max-width: 575px) {
+    padding: 36px;
+  }
+
+  @media screen and (max-width: 420px) {
+    padding: 24px;
+  }
+`
+
+export default Hero

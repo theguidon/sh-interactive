@@ -1,11 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
 import styled, { css } from "styled-components"
-
+import slugify from "@sindresorhus/slugify"
 import DescriptionBox from "../components/DescriptionBox"
 import Hero from "../components/Hero"
 import Layout from "../components/Layout"
-
+import Footer from "../components/Footer"
+import ContactUs from "../components/ContactUs"
 
 const DescriptionSection = styled.section`
   position: relative;
@@ -167,6 +168,8 @@ const FloatingDateContainer = styled.div`
   top: 48px;
   height: 30px;
   overflow: hidden;
+  z-index: 1000;
+  background-color: #008c99;
 `
 
 const FloatingDate = styled.p`
@@ -195,7 +198,7 @@ export default ({ data }) => {
 
     if (newTagIndex !== "") {
       const tagNum = tags.edges.findIndex(el => {
-        return el.node.data.name.text === newTagIndex
+        return slugify(el.node.data.name.text) === newTagIndex
       })
 
       setCurrTagIndex(tagNum)
@@ -224,7 +227,7 @@ export default ({ data }) => {
     observer.observe(item)
 
     return () => observer.unobserve(item)
-  }, [])
+  }, [description_wrapper])
 
   return (
     <Layout>
@@ -244,7 +247,11 @@ export default ({ data }) => {
             <DescriptionBox
               key={el.node.id}
               html={el.node.data.description.html}
-              tag={el.node.data.tag.document[0].data.name.text}
+              tag={el.node.data.tag.slug}
+              bg={el.node.data.background_image?.localFile?.childImageSharp}
+              mbg={
+                el.node.data.mobile_background_image?.localFile?.childImageSharp
+              }
               dateIndex={i}
               modifyBottomBar={modifyBottomBar}
             ></DescriptionBox>
@@ -271,6 +278,8 @@ export default ({ data }) => {
           </DateContainer>
         </BottomBar>
       </DescriptionSection>
+      <ContactUs />
+      <Footer />
     </Layout>
   )
 }
@@ -287,17 +296,26 @@ export const query = graphql`
             description {
               html
             }
-            tag {
-              document {
-                ... on PrismicTags {
-                  id
-                  data {
-                    name {
-                      text
-                    }
+            mobile_background_image {
+              localFile {
+                childImageSharp {
+                  fluid(quality: 90, maxWidth: 1920) {
+                    ...GatsbyImageSharpFluid_tracedSVG
                   }
                 }
               }
+            }
+            background_image {
+              localFile {
+                childImageSharp {
+                  fluid(quality: 90, maxWidth: 1920) {
+                    ...GatsbyImageSharpFluid_tracedSVG
+                  }
+                }
+              }
+            }
+            tag {
+              slug
             }
           }
           id
@@ -307,12 +325,12 @@ export const query = graphql`
     tags: allPrismicTags {
       edges {
         node {
+          id
           data {
             name {
               text
             }
           }
-          id
         }
       }
     }

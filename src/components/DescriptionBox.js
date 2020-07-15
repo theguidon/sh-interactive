@@ -1,16 +1,10 @@
 import React from "react"
 import styled, { css } from "styled-components"
+import BackgroundImage from "gatsby-background-image"
 
-const DescriptionContainer = styled.div``
+import useWindowSize from "../hooks/useWindowSize"
 
-const DescriptionScreen = styled.div`
-  background-color: #0b0614;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
+const DescriptionContainer = styled.section``
 
 const DescriptionTextContainer = styled.div`
   text-shadow: ${p => p.theme["text-shadow"]};
@@ -86,8 +80,61 @@ const DescriptionTextContainer = styled.div`
   }
 `
 
-export default ({ modifyBottomBar, html, dateIndex, tag }) => {
-  const [lock, setLock] = React.useState(false)
+const ArtDirectedBackground = ({ className, bg, mbg, html, showAnimation }) => {
+  const size = useWindowSize()
+
+  let sources
+  let desktop
+  let mobile
+  if (!!bg && !!mbg) {
+    desktop = [
+      bg.fluid,
+      `linear-gradient(0deg,rgba(11, 6, 20, 0.9) 0%,rgba(11, 6, 20, 0.9) 100%)`,
+    ].reverse()
+    mobile = [
+      mbg.fluid,
+      `linear-gradient(0deg,rgba(11, 6, 20, 0.9) 0%,rgba(11, 6, 20, 0.9) 100%)`,
+    ].reverse()
+  } else if (!!bg && !mbg) {
+    sources = [
+      bg.fluid,
+      `linear-gradient(0deg,rgba(11, 6, 20, 0.9) 0%,rgba(11, 6, 20, 0.9) 100%)`,
+    ].reverse()
+  }
+
+  return (
+    <BackgroundImage
+      Tag={`div`}
+      className={className}
+      fluid={!!bg && !!mbg ? (size.width > 1024 ? desktop : mobile) : sources}
+    >
+      <DescriptionTextContainer
+        dangerouslySetInnerHTML={{ __html: html }}
+        showAnimation={showAnimation}
+      />
+    </BackgroundImage>
+  )
+}
+
+const DescriptionScreen = styled(ArtDirectedBackground)`
+  background-color: #0b0614;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const SubScreen = styled.div`
+  background-color: #0b0614;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export default ({ modifyBottomBar, html, dateIndex, tag, bg, mbg }) => {
   const [showAnimation, setShowAnimation] = React.useState(false)
   const description_wrapper = React.useRef(null)
 
@@ -101,7 +148,6 @@ export default ({ modifyBottomBar, html, dateIndex, tag }) => {
     const callback = function(entries, observer) {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0.7) {
-          setLock(true)
           modifyBottomBar(dateIndex, tag)
           setShowAnimation(true)
         } else {
@@ -115,16 +161,25 @@ export default ({ modifyBottomBar, html, dateIndex, tag }) => {
     observer.observe(item)
 
     return () => observer.unobserve(item)
-  }, [])
+  }, [dateIndex, modifyBottomBar, tag])
 
   return (
     <DescriptionContainer ref={description_wrapper}>
-      <DescriptionScreen lock={lock}>
-        <DescriptionTextContainer
-          dangerouslySetInnerHTML={{ __html: html }}
+      {!!bg || !!mbg ? (
+        <DescriptionScreen
+          html={html}
+          bg={bg}
+          mbg={mbg}
           showAnimation={showAnimation}
-        ></DescriptionTextContainer>
-      </DescriptionScreen>
+        />
+      ) : (
+        <SubScreen>
+          <DescriptionTextContainer
+            dangerouslySetInnerHTML={{ __html: html }}
+            showAnimation={showAnimation}
+          />
+        </SubScreen>
+      )}
     </DescriptionContainer>
   )
 }
