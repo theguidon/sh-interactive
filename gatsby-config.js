@@ -6,6 +6,7 @@
 
 module.exports = {
   /* Your site config here */
+  pathPrefix: `/2020/07/admu-sexual-harassment`,
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
