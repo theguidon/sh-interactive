@@ -96,7 +96,6 @@ export default function ContactUs() {
     setMessage("")
   }
 
-  // const [] = React.useState()
   return (
     <ContactUsSection>
       <div className="content-panel">

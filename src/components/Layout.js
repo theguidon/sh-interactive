@@ -1,7 +1,6 @@
 import React from "react"
 import { Helmet } from "react-helmet"
 import { createGlobalStyle, ThemeProvider } from "styled-components"
-import link from "../images/link.svg"
 
 import "../styles/reset.css"
 
@@ -16,9 +15,7 @@ const GlobalStyle = createGlobalStyle`
     align-items:center;
   }
 
-  a:before {
-    content: url(${link});
-  }
+
 `
 
 const theme = {

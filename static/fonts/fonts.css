@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Tiempos Text";
-  src: url("tt-regular.otf");
+  src: url("TiemposHeadline-Regular.otf");
   font-style: normal;
   font-weight: normal;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "Tiempos Text";
-  src: url("tt-bold.otf");
+  src: url("TiemposHeadline-Bold.otf");
   font-style: normal;
   font-weight: bold;
   font-display: swap;
@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: "Tiempos Text";
-  src: url("tt-medium.otf");
+  src: url("TiemposHeadline-Medium.otf");
   font-style: normal;
   font-weight: medium;
   font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: "Tiempos Text";
-  src: url("tt-semibold.otf");
+  src: url("TiemposHeadline-Semibold.otf");
   font-style: normal;
   font-weight: 600;
   font-display: swap;
